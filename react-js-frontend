@@ -1,0 +1,128 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import JignasaRegister from "./pages/JignasaRegister";
+import YatraRegister from "./pages/YatraRegister";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/jignasa" element={<JignasaRegister />} />
+        <Route path="/yatra" element={<YatraRegister />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+
+
+// src/pages/Home.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+
+export default function Home() {
+  return (
+    <div className="text-center mt-20">
+      <h1 className="text-3xl font-bold">Welcome to Folk Chennai</h1>
+      <div className="mt-8 space-x-4">
+        <Link to="/jignasa" className="bg-blue-500 px-4 py-2 text-white rounded">Jignasa Registration</Link>
+        <Link to="/yatra" className="bg-green-500 px-4 py-2 text-white rounded">Yatra Registration</Link>
+      </div>
+    </div>
+  );
+}
+
+
+// src/pages/JignasaRegister.jsx
+import React, { useState } from "react";
+import axios from "axios";
+
+export default function JignasaRegister() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    college: "",
+    year: ""
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("https://api.folkchennai.in/api/jignasa", form);
+      alert("Registered successfully!");
+      setForm({ name: "", email: "", phone: "", college: "", year: "" });
+    } catch (err) {
+      alert("Error in submission");
+    }
+  };
+
+  return (
+    <div className="max-w-md mx-auto mt-10">
+      <h2 className="text-xl font-bold mb-4">Jignasa Registration</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {Object.entries(form).map(([key, value]) => (
+          <input
+            key={key}
+            type="text"
+            placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+            value={value}
+            onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+            className="w-full p-2 border rounded"
+            required
+          />
+        ))}
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+      </form>
+    </div>
+  );
+}
+
+
+// src/pages/YatraRegister.jsx
+import React, { useState } from "react";
+import axios from "axios";
+
+export default function YatraRegister() {
+  const [form, setForm] = useState({
+    name: "",
+    age: "",
+    contact: "",
+    location: "",
+    preferences: ""
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("https://api.folkchennai.in/api/yatra", form);
+      alert("Registered successfully!");
+      setForm({ name: "", age: "", contact: "", location: "", preferences: "" });
+    } catch (err) {
+      alert("Error in submission");
+    }
+  };
+
+  return (
+    <div className="max-w-md mx-auto mt-10">
+      <h2 className="text-xl font-bold mb-4">Yatra Registration</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {Object.entries(form).map(([key, value]) => (
+          <input
+            key={key}
+            type="text"
+            placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+            value={value}
+            onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+            className="w-full p-2 border rounded"
+            required
+          />
+        ))}
+        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+      </form>
+    </div>
+  );
+}
